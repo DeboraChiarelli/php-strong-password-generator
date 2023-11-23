@@ -11,23 +11,4 @@ function generatePassword($length) {
     }
     return $password;
 }
-
-// La funzione isset($_GET['length']) verifica se la variabile $_GET contiene una chiave chiamata 'length'.
-// La funzione isset restituisce true se la chiave esiste in $_GET, altrimenti restituisce false.
-// In questo contesto, verifica se è stato fornito un valore per la lunghezza della password attraverso il metodo GET.
-// Se la condizione è true, significa che la lunghezza della password è stata fornita nella richiesta GET. 
-if (isset($_GET['length'])) {
-    // Quindi, viene assegnato il valore della lunghezza della password a una variabile:
-    $passwordLength = $_GET['length'];
-    // Questa condizione verifica se la lunghezza della password ($passwordLength) è un numero positivo. 
-    //Se la condizione è true
-    if ($passwordLength > 0) {
-        $generatedPassword = generatePassword($passwordLength); // la lunghezza è valida e può essere utilizzata per generare una password
-        // Viene utilizzato echo per stampare sulla pagina un messaggio che include la password generata.
-        echo '<p>La tua password generata è:' . $generatedPassword . '</p>';
-    } else {
-        echo '<p>La lunghezza della password deve essere un numero positivo.</p>';
-    }
-}
-
 ?>
