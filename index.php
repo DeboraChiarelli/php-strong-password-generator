@@ -25,17 +25,17 @@ Invece di visualizzare la password nella index, effettuare un redirect ad una pa
     <input type="number" name="password" id="password">
     <br>
     
-    <label for="numeri">Numeri</label>
-    <input type="checkbox" name="numeri"> <br>
+    <label for="lettere_minuscole">Lettere</label>
+    <input type="checkbox" name="letters"> <br>
 
     <label for="lettere_maiuscole">Lettere Maiuscole</label>
-    <input type="checkbox" name="lettere_Maiuscole"> <br>
+    <input type="checkbox" name="lettersUpper"> <br>
 
-    <label for="lettere_minuscole">Lettere Minuscole</label>
-    <input type="checkbox" name="lettere_minuscole"> <br>
+    <label for="numeri">Numeri</label>
+    <input type="checkbox" name="numbers"> <br>
 
     <label for="simboli">Simboli</label>
-    <input type="checkbox" name="simboli"> <br> 
+    <input type="checkbox" name="symbols"> <br> 
 
     <input type="submit"> <br>
 </form>
@@ -44,16 +44,41 @@ Invece di visualizzare la password nella index, effettuare un redirect ad una pa
 // Dichiaro una variabile $PasswordLenght e assegno il valore della query string "password" attraverso $_GET["password"]
 $PasswordLenght = $_GET["password"];
 // Dichiaro altre variabili per altri parametri ($numeri, $lettere_maiuscole, $lettere_minuscole, $simboli) e assegno loro i valori corrispondenti dalle rispettive query string attraverso $_GET.
-$numeri = $_GET["numeri"];
-$lettere_maiuscole = $_GET["lettere_maiuscole"];
-$lettere_minuscole = $_GET["lettere_minuscole"];
-$simboli = $_GET["simboli"];
+$numeri = $_GET["numbers"];
+$lettere_maiuscole = $_GET["lettersUpper"];
+$lettere_minuscole = $_GET["letters"];
+$simboli = $_GET["symbols"];
 
 
 // Ho dichiarato la funzione per generare la password, con argomenti i valori dei parametri ottenuti dalle query string
-function passwordGenerator($PasswordLenght, $numeri, $lettere_maiuscole, $lettere_minuscole, $simboli){
+function passwordGenerator($PasswordLenght, $letters, $lettersUpper, $numbers, $symbols){
 
     $password = "";
+
+    for ($i=0; $i < $PasswordLenght ; $i++) { 
+
+        $randomNumber = "1234567890";
+        $randomLetterUpper = "ABCDEFGHILMNOPQRSTUVZXYWJK";
+        $randomLetter = "abcdefghilmnopqrstuvzxywjk";
+        $randomSymbol = "!$%&/()=?-_,;.:@#[+*]";
+    
+        if($numbers === 'on'){
+            $password = $password . $randomNumber; 
+        };
+    
+        if($lettersUpper === 'on'){
+            $password = $password . $randomLetterUpper; 
+        };
+        
+        if($letters === 'on'){
+            $password = $password . $randomLetter; 
+        };
+        
+        if($symbols === 'on'){
+            $password = $password . $randomSymbol; 
+        };
+        
+    };
 }
     
 
