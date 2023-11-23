@@ -49,9 +49,13 @@ $lettere_maiuscole = $_GET["lettere_maiuscole"];
 $lettere_minuscole = $_GET["lettere_minuscole"];
 $simboli = $_GET["simboli"];
 
-// Ho chiamato la funzione passwordGenerator passando come argomenti i valori dei parametri ottenuti dalle query string
-passwordGenerator($PasswordLenght, $numeri, $lettere_maiuscole, $lettere_minuscole, $simboli);
-$password = "";
+
+// Ho dichiarato la funzione per generare la password, con argomenti i valori dei parametri ottenuti dalle query string
+function passwordGenerator($PasswordLenght, $numeri, $lettere_Maiuscole, $lettere_minuscole, $simboli){
+
+    $password = "";
+}
+    
 
 ?>
 
