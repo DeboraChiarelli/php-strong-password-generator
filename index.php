@@ -12,7 +12,7 @@ Invece di visualizzare la password nella index, effettuare un redirect ad una pa
 <?php
 include __DIR__ . '/functions.php';
 
-$error = [];
+$error = '';
 
 // La funzione isset($_GET['length']) verifica se la variabile $_GET contiene una chiave chiamata 'length'.
 // La funzione isset restituisce true se la chiave esiste in $_GET, altrimenti restituisce false.
@@ -27,7 +27,7 @@ if (isset($_GET['length'])) {
         $generatedPassword = generatePassword($passwordLength); // la lunghezza è valida e può essere utilizzata per generare una password
         // Viene utilizzato echo per stampare sulla pagina un messaggio che include la password generata.
     } else { // è stata inserito un numero negativo
-        $error[] = 'La lunghezza della password deve essere un numero positivo.';
+        $error = 'La lunghezza della password deve essere un numero positivo.';
     }
 }
 
@@ -40,6 +40,7 @@ if (isset($_GET['length'])) {
     <title>Strong Password Generator</title>
 </head>
 <body>
+
     <form method="GET">
         <label for="length">Inserisci la lunghezza della password:</label>
         <input type="number" id="length" name="length" min="1" required>
