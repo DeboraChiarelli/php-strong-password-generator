@@ -1,3 +1,4 @@
+
 <!-- Descrizione
 Dobbiamo creare una pagina che permetta ai nostri utenti di utilizzare il nostro generatore di password (abbastanza) sicure. L’esercizio è suddiviso in varie milestone ed è molto importante svilupparle in modo ordinato.
 Milestone 1
@@ -8,6 +9,40 @@ Verificato il corretto funzionamento del nostro codice, spostiamo la logica in u
 Milestone 3 (BONUS)
 Invece di visualizzare la password nella index, effettuare un redirect ad una pagina dedicata che tramite $_SESSION recupererà la password da mostrare all’utente. -->
 
+<?php
+// Dichiaro una funzione necessaria a generare una password casuale di lunghezza specificata.
+function generatePassword($length) {
+    $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+'; // stringa di caratteri possibili che possono essere utilizzati nella password.
+    // Inizializzo una stringa vuota chiamata $password che conterrà la password generata.
+    $password = '';
+    // Utilizzo il ciclo for per iterare dalla posizione 0 fino alla lunghezza desiderata $length. 
+    for ($i = 0; $i < $length; $i++) {
+        $password .= $characters[rand(0, strlen($characters) - 1)]; // Ad ogni iterazione, viene concatenato un carattere casuale dalla stringa $characters alla variabile $password
+    //  La funzione rand(0, strlen($characters) - 1) genera un numero casuale che viene utilizzato come indice per selezionare un carattere dalla stringa di caratteri.
+    }
+    return $password;
+}
+
+// La funzione isset($_GET['length']) verifica se la variabile $_GET contiene una chiave chiamata 'length'.
+// La funzione isset restituisce true se la chiave esiste in $_GET, altrimenti restituisce false.
+// In questo contesto, verifica se è stato fornito un valore per la lunghezza della password attraverso il metodo GET.
+// Se la condizione è true, significa che la lunghezza della password è stata fornita nella richiesta GET. 
+if (isset($_GET['length'])) {
+    // Quindi, viene assegnato il valore della lunghezza della password a una variabile:
+    $passwordLength = $_GET['length'];
+    // Questa condizione verifica se la lunghezza della password ($passwordLength) è un numero positivo. 
+    //Se la condizione è true
+    if ($passwordLength > 0) {
+        $generatedPassword = generatePassword($passwordLength); // la lunghezza è valida e può essere utilizzata per generare una password
+        // Viene utilizzato echo per stampare sulla pagina un messaggio che include la password generata.
+        echo '<p>La tua password generata è:' . $generatedPassword . '</p>';
+    } else {
+        echo '<p>La lunghezza della password deve essere un numero positivo.</p>';
+    }
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,84 +52,12 @@ Invece di visualizzare la password nella index, effettuare un redirect ad una pa
 </head>
 <body>
 
-<form method="get">
-    <label for="passwordLength">Lunghezza Password</label>
-    <input type="number" name="passwordLength" id="passwordLength" min="1" required>
-    <br>
-
-    <label for="letters">Lettere</label>
-    <input type="checkbox" name="letters" value="on"> <br>
-
-    <label for="lettersUpper">Lettere Maiuscole</label>
-    <input type="checkbox" name="lettersUpper" value="on"> <br>
-
-    <label for="numbers">Numeri</label>
-    <input type="checkbox" name="numbers" value="on"> <br>
-
-    <label for="symbols">Simboli</label>
-    <input type="checkbox" name="symbols" value="on"> <br>
-
-    <input type="submit" value="Genera Password">
-</form>
-
-<?php
-// Dichiaro una variabile $PasswordLength e assegno il valore della query string "password" attraverso $_GET["password"]
-$passwordLength = $_GET["password"];
-// Dichiaro altre variabili per altri parametri ($numeri, $lettere_maiuscole, $lettere_minuscole, $simboli) e assegno loro i valori corrispondenti dalle rispettive query string attraverso $_GET.
-$letters = $_GET["letters"];
-$lettersUpper = $_GET["lettersUpper"];
-$numbers = $_GET["numbers"];
-$symbols = $_GET["symbols"];
-
-
-// Ho dichiarato la funzione per generare la password, con cinque parametri
-function passwordGenerator($passwordLength, $letters, $lettersUpper, $numbers, $symbols){
-//   Ho inizializzato una variabile $password come stringa vuota. Questa variabile sarà utilizzata per contenere i caratteri che costituiranno la password
-    $password = "";
-
-    for ($i=0; $i < $passwordLength ; $i++) { 
-
-        $randomLetter = "abcdefghilmnopqrstuvzxywjk";
-        $randomLetterUpper = "ABCDEFGHILMNOPQRSTUVZXYWJK";
-        $randomNumber = "1234567890";
-        $randomSymbol = "!$%&/()=?-_,;.:@#[+*]";
-
-        passwordGenerator($passwordLength, $letters, $lettersUpper, $numbers, $symbols);
-
-//      Se la checkbox per i numeri è selezionata
-        if($letters === 'on'){
-            $password .= $randomLetter[rand(0, strlen($randomLetter) - 1)]; // allora aggiungo il carattere casuale alla password 
-        };
-    
-        if($lettersUpper === 'on'){
-            $password .= $randomLetterUpper[rand(0, strlen($randomLetterUpper) - 1)];
-        };
-        
-        if($numbers === 'on'){
-            $password .= $randomNumber[rand(0, strlen($randomNumber) - 1)];
-        };
-
-        if($symbols === 'on'){
-            $password .= $randomSymbol[rand(0, strlen($randomSymbol) - 1)];
-        };
-  
-    };
-    // Condizione che controlla se almeno una delle checkbox è stata selezionata. Ogni checkbox ha un valore "on" quando è selezionata. 
-    // Quindi, se almeno una di queste checkbox ha il valore "on", significa che l'utente ha selezionato almeno una categoria di caratteri per la generazione della password.
-    // Se questa condizione è vera, viene eseguita la parte di codice che utilizza la funzione str_shuffle($password) per mischiare casualmente 
-    // i caratteri della password generata, e il risultato viene stampato.
-    // Se la condizione non è vera, cioè nessuna checkbox è stata selezionata, viene eseguita la parte di codice nel blocco else, che stampa "Seleziona almeno una checkbox". 
-    // Questo avvisa l'utente che deve selezionare almeno una categoria di caratteri per generare la password.
-
-    if ($numbers === 'on' || $letters === 'on' || $lettersUpper === 'on' || $symbols === 'on') {
-        echo str_shuffle($password);
-    } else {
-        echo "Seleziona almeno una checkbox";
-    }  
-}
-    
-?> 
-
+    <form method="GET">
+        <label for="length">Inserisci la lunghezza della password:</label>
+        <input type="number" id="length" name="length" min="1" required>
+        <br>
+        <input type="submit" value="Genera Password">
+    </form>
 </body>
 </html>
 
