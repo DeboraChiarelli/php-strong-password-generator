@@ -10,7 +10,6 @@ Milestone 3 (BONUS)
 Invece di visualizzare la password nella index, effettuare un redirect ad una pagina dedicata che tramite $_SESSION recupererà la password da mostrare all’utente. -->
 
 <?php
-// Dichiaro una funzione necessaria a generare una password casuale di lunghezza specificata.
 include __DIR__ . '/functions.php';
 ?>
 
