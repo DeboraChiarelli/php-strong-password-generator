@@ -14,78 +14,87 @@ Invece di visualizzare la password nella index, effettuare un redirect ad una pa
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Strong Password Generator</title>
-
-
 </head>
 <body>
 
-
-<form>
-    <label for="password">Password</label>
-    <input type="number" name="password" id="password">
+<form method="get">
+    <label for="passwordLength">Lunghezza Password</label>
+    <input type="number" name="passwordLength" id="passwordLength" min="1" required>
     <br>
-    
-    <label for="lettere_minuscole">Lettere</label>
-    <input type="checkbox" name="letters"> <br>
 
-    <label for="lettere_maiuscole">Lettere Maiuscole</label>
-    <input type="checkbox" name="lettersUpper"> <br>
+    <label for="letters">Lettere</label>
+    <input type="checkbox" name="letters" value="on"> <br>
 
-    <label for="numeri">Numeri</label>
-    <input type="checkbox" name="numbers"> <br>
+    <label for="lettersUpper">Lettere Maiuscole</label>
+    <input type="checkbox" name="lettersUpper" value="on"> <br>
 
-    <label for="simboli">Simboli</label>
-    <input type="checkbox" name="symbols"> <br> 
+    <label for="numbers">Numeri</label>
+    <input type="checkbox" name="numbers" value="on"> <br>
 
-    <input type="submit"> <br>
+    <label for="symbols">Simboli</label>
+    <input type="checkbox" name="symbols" value="on"> <br>
+
+    <input type="submit" value="Genera Password">
 </form>
 
 <?php
-// Dichiaro una variabile $PasswordLenght e assegno il valore della query string "password" attraverso $_GET["password"]
-$PasswordLenght = $_GET["password"];
+// Dichiaro una variabile $PasswordLength e assegno il valore della query string "password" attraverso $_GET["password"]
+$passwordLength = $_GET["password"];
 // Dichiaro altre variabili per altri parametri ($numeri, $lettere_maiuscole, $lettere_minuscole, $simboli) e assegno loro i valori corrispondenti dalle rispettive query string attraverso $_GET.
-$numeri = $_GET["numbers"];
-$lettere_maiuscole = $_GET["lettersUpper"];
-$lettere_minuscole = $_GET["letters"];
-$simboli = $_GET["symbols"];
+$letters = $_GET["letters"];
+$lettersUpper = $_GET["lettersUpper"];
+$numbers = $_GET["numbers"];
+$symbols = $_GET["symbols"];
 
 
-// Ho dichiarato la funzione per generare la password, con argomenti i valori dei parametri ottenuti dalle query string
-function passwordGenerator($PasswordLenght, $letters, $lettersUpper, $numbers, $symbols){
-
+// Ho dichiarato la funzione per generare la password, con cinque parametri
+function passwordGenerator($passwordLength, $letters, $lettersUpper, $numbers, $symbols){
+//   Ho inizializzato una variabile $password come stringa vuota. Questa variabile sarà utilizzata per contenere i caratteri che costituiranno la password
     $password = "";
 
-    for ($i=0; $i < $PasswordLenght ; $i++) { 
+    for ($i=0; $i < $passwordLength ; $i++) { 
 
-        $randomNumber = "1234567890";
-        $randomLetterUpper = "ABCDEFGHILMNOPQRSTUVZXYWJK";
         $randomLetter = "abcdefghilmnopqrstuvzxywjk";
+        $randomLetterUpper = "ABCDEFGHILMNOPQRSTUVZXYWJK";
+        $randomNumber = "1234567890";
         $randomSymbol = "!$%&/()=?-_,;.:@#[+*]";
-    
-        if($numbers === 'on'){
-            $password = $password . $randomNumber; 
+
+        passwordGenerator($passwordLength, $letters, $lettersUpper, $numbers, $symbols);
+
+//      Se la checkbox per i numeri è selezionata
+        if($letters === 'on'){
+            $password .= $randomLetter[rand(0, strlen($randomLetter) - 1)]; // allora aggiungo il carattere casuale alla password 
         };
     
         if($lettersUpper === 'on'){
-            $password = $password . $randomLetterUpper; 
+            $password .= $randomLetterUpper[rand(0, strlen($randomLetterUpper) - 1)];
         };
         
-        if($letters === 'on'){
-            $password = $password . $randomLetter; 
+        if($numbers === 'on'){
+            $password .= $randomNumber[rand(0, strlen($randomNumber) - 1)];
         };
-        
+
         if($symbols === 'on'){
-            $password = $password . $randomSymbol; 
+            $password .= $randomSymbol[rand(0, strlen($randomSymbol) - 1)];
         };
-        
+  
     };
+    // Condizione che controlla se almeno una delle checkbox è stata selezionata. Ogni checkbox ha un valore "on" quando è selezionata. 
+    // Quindi, se almeno una di queste checkbox ha il valore "on", significa che l'utente ha selezionato almeno una categoria di caratteri per la generazione della password.
+    // Se questa condizione è vera, viene eseguita la parte di codice che utilizza la funzione str_shuffle($password) per mischiare casualmente 
+    // i caratteri della password generata, e il risultato viene stampato.
+    // Se la condizione non è vera, cioè nessuna checkbox è stata selezionata, viene eseguita la parte di codice nel blocco else, che stampa "Seleziona almeno una checkbox". 
+    // Questo avvisa l'utente che deve selezionare almeno una categoria di caratteri per generare la password.
+
+    if ($numbers === 'on' || $letters === 'on' || $lettersUpper === 'on' || $symbols === 'on') {
+        echo str_shuffle($password);
+    } else {
+        echo "Seleziona almeno una checkbox";
+    }  
 }
     
+?> 
 
-?>
-
-
-     
 </body>
 </html>
 
